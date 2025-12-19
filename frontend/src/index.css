@@ -26,6 +26,8 @@ body {
   background-clip: text;
 }
 
+
+
 .hover-lift {
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -72,4 +74,19 @@ body {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 1.5rem;
+}
+
+.btn-smooth {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  will-change: transform, box-shadow;
+}
+
+.btn-smooth:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 10px 20px -10px rgba(99, 102, 241, 0.3) !important;
+}
+
+.btn-smooth:active {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 5px 10px -5px rgba(99, 102, 241, 0.2) !important;
 }

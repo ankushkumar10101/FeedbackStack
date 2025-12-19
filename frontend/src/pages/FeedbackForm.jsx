@@ -79,7 +79,7 @@ const FeedbackForm = () => {
                         {/* Mobile: Button relative at top right */}
                         <div className="d-flex d-md-none justify-content-end mb-2">
                             <button 
-                                className="btn btn-sm btn-light rounded-pill px-3 shadow-sm text-secondary fw-bold small"
+                                className="btn btn-sm btn-light rounded-pill px-3 shadow-sm text-secondary fw-bold small btn-smooth"
                                 onClick={() => navigate('/login')}
                             >
                                 View Feedbacks &rarr;
@@ -89,7 +89,7 @@ const FeedbackForm = () => {
                         {/* Desktop: Button absolute top right, text centered */}
                         <div className="text-center position-relative">
                             <button 
-                                className="btn btn-sm btn-light position-absolute top-0 end-0 rounded-pill px-3 shadow-sm text-secondary fw-bold small d-none d-md-block"
+                                className="btn btn-sm btn-light position-absolute top-0 end-0 rounded-pill px-3 shadow-sm text-secondary fw-bold small d-none d-md-block btn-smooth"
                                 onClick={() => navigate('/login')}
                             >
                                 View Feedbacks &rarr;
@@ -169,7 +169,7 @@ const FeedbackForm = () => {
                                 <button 
                                     type="submit" 
                                     disabled={isSubmitting}
-                                    className="btn btn-primary w-100 btn-lg rounded-pill py-3 fw-bold shadow-sm hover-lift d-flex align-items-center justify-content-center"
+                                    className="btn btn-primary w-100 btn-lg rounded-pill py-3 fw-bold shadow-sm hover-lift d-flex align-items-center justify-content-center btn-smooth"
                                     style={{ background: 'linear-gradient(135deg, #6366f1, #a855f7)', border: 'none' }}
                                 >
                                     {isSubmitting ? (

@@ -6,6 +6,7 @@ const FeedbackList = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const [activeTab, setActiveTab] = useState('Overview');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,8 +32,20 @@ const FeedbackList = () => {
         );
     }
 
+    const categories = ['Overview', ...(data?.category_breakdown?.map(c => c.category) || [])];
+    const activeCategoryData = data?.category_breakdown?.find(c => c.category === activeTab);
+
+    const categoryDisplayMap = {
+        'Website': 'Website Experience',
+        'Teaching': 'Teaching Quality',
+        'Service': 'Customer Service',
+        'Product': 'Product Features',
+        'Other': 'Other',
+        'Overview': 'Overview'
+    };
+
     return (
-        <div className="min-vh-100 py-5" style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%)' }}>
+        <div className="min-vh-100 py-5 overflow-x-hidden" style={{ background: 'linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%)' }}>
             <div className="container">
                 {/* Header Section */}
                 <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mb-5 animate-fade-in">
@@ -41,118 +54,205 @@ const FeedbackList = () => {
                         <p className="text-secondary mb-0">Insights from user feedback</p>
                     </div>
                     <button 
-                         className="btn btn-sm btn-light rounded-pill px-3 shadow-sm text-secondary fw-bold small"
+                         className="btn btn-white bg-white btn-smooth shadow-sm text-secondary fw-bold rounded-pill px-4"
                          onClick={() => navigate('/')}
                     >
-                        &larr; Back to Home
+                        <i className="bi bi-arrow-left me-2"></i> Back to Home
                     </button>
                 </div>
 
-                {/* Global Stats */}
-                <div className="row g-4 mb-5 animate-fade-in">
-                     <div className="col-md-6 col-lg-3 offset-lg-3">
-                        <div className="glass-card p-4 text-center h-100 position-relative overflow-hidden group-hover-lift">
-                            <div className="position-absolute top-0 start-0 w-100 h-100 bg-primary opacity-0" style={{ opacity: 0.02 }}></div>
-                            <h3 className="display-4 fw-bold text-primary mb-0">{data?.total_feedback}</h3>
-                            <p className="text-uppercase text-secondary small fw-bold ls-2 mt-2 mb-0" style={{ fontSize: '0.7rem' }}>Total Responses</p>
-                        </div>
-                     </div>
-                     <div className="col-md-6 col-lg-3">
-                        <div className="glass-card p-4 text-center h-100 position-relative overflow-hidden group-hover-lift">
-                             <div className="position-absolute top-0 start-0 w-100 h-100 bg-warning opacity-0" style={{ opacity: 0.02 }}></div>
-                            <div className="d-flex align-items-center justify-content-center gap-2">
-                                <span className="display-4 fw-bold text-dark">{data?.average_rating}</span>
-                                <svg width="28" height="28" viewBox="0 0 24 24" fill="#fbbf24" stroke="none">
-                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                </svg>
-                            </div>
-                            <p className="text-uppercase text-secondary small fw-bold ls-2 mt-2 mb-0" style={{ fontSize: '0.7rem' }}>Avg Rating</p>
-                        </div>
-                     </div>
+                {/* Tabs Navigation - Wrapped Layout */}
+                <div className="mb-5 d-flex flex-wrap justify-content-center justify-content-md-start gap-3 animate-fade-in">
+                    {categories.map((cat) => (
+                        <button
+                            key={cat}
+                            onClick={() => setActiveTab(cat)}
+                            className={`btn rounded-pill px-4 py-2 fw-bold btn-smooth border ${
+                                activeTab === cat 
+                                ? 'btn-white text-primary shadow-sm border-white' 
+                                : 'btn-white bg-white text-secondary border-light hover-shadow'
+                            }`}
+                        >
+                            {categoryDisplayMap[cat] || cat}
+                        </button>
+                    ))}
                 </div>
 
-                {/* Category Grid */}
-                <div className="row g-4">
-                    {data?.category_breakdown?.map((cat, index) => (
-                        <div key={index} className="col-lg-6">
-                            <div className="glass-card h-100 d-flex flex-column animate-fade-in hover-lift" 
-                                 style={{ 
-                                     animationDelay: `${index * 0.1}s`,
-                                     border: '1px solid rgba(255, 255, 255, 0.6)',
-                                     boxShadow: '0 10px 30px -5px rgba(0, 0, 0, 0.05)'
-                                 }}>
-                                
-                                {/* Header */}
-                                <div className="p-4 d-flex justify-content-between align-items-center border-bottom border-light bg-white bg-opacity-25">
-                                    <div className="d-flex align-items-center gap-3">
-                                        <div className="rounded-circle bg-white shadow-sm p-3 d-flex align-items-center justify-content-center" style={{ width: '50px', height: '50px' }}>
-                                            <span className="fw-bold text-primary fs-5">{cat.category.charAt(0)}</span>
-                                        </div>
+                {/* Content Area */}
+                <div className="animate-fade-in">
+                    {activeTab === 'Overview' ? (
+                        <>
+                            {/* Global KPI Cards - Distinct Data Blocks */}
+                            <div className="row g-5 mb-5">
+                                 <div className="col-md-6">
+                                    <div className="glass-card p-5 d-flex align-items-center justify-content-between h-100 hover-lift shadow-sm border border-white">
                                         <div>
-                                            <h4 className="fw-bold m-0 text-dark" style={{ letterSpacing: '-0.5px' }}>{cat.category}</h4>
-                                            <div className="d-flex align-items-center gap-1 mt-1">
-                                                <span className="fw-bold small text-dark">{cat.average_rating}</span>
-                                                <div className="d-flex text-warning" style={{ fontSize: '0.8rem' }}>
+                                            <p className="text-secondary small fw-bold text-uppercase mb-2 ls-1">Total Feedback</p>
+                                            <h2 className="display-3 fw-bold text-dark mb-0">{data?.total_feedback}</h2>
+                                        </div>
+                                        <div className="bg-primary bg-opacity-10 rounded-circle text-primary d-flex align-items-center justify-content-center" style={{ width: '80px', height: '80px' }}>
+                                            <i className="bi bi-chat-square-text fs-2"></i>
+                                        </div>
+                                    </div>
+                                 </div>
+                                 <div className="col-md-6">
+                                    <div className="glass-card p-5 d-flex align-items-center justify-content-between h-100 hover-lift shadow-sm border border-white">
+                                        <div>
+                                            <p className="text-secondary small fw-bold text-uppercase mb-2 ls-1">Average Rating</p>
+                                            <div className="d-flex align-items-center gap-3">
+                                                <h2 className="display-3 fw-bold text-dark mb-0">{data?.average_rating}</h2>
+                                                <div className="d-flex text-warning fs-4">
                                                     {[...Array(5)].map((_, i) => (
-                                                        <span key={i} style={{ opacity: i < Math.round(cat.average_rating) ? 1 : 0.3 }}>★</span>
+                                                        <i key={i} className={`bi ${i < Math.round(data?.average_rating || 0) ? 'bi-star-fill' : 'bi-star'} me-1`}></i>
                                                     ))}
                                                 </div>
                                             </div>
                                         </div>
+                                        <div className="bg-warning bg-opacity-10 rounded-circle text-warning d-flex align-items-center justify-content-center" style={{ width: '80px', height: '80px' }}>
+                                            <i className="bi bi-star fs-2"></i>
+                                        </div>
                                     </div>
-                                    <span className="badge bg-dark bg-opacity-10 text-dark rounded-pill px-3 py-2 fw-normal border border-dark border-opacity-10">
-                                        {cat.feedback_count}
-                                    </span>
-                                </div>
+                                 </div>
+                            </div>
 
-                                <div className="p-4 d-flex flex-column flex-fill">
-                                    {/* Comments */}
-                                    <div className="mb-4">
-                                        <h6 className="text-uppercase text-secondary fw-bold small mb-3 ls-1" style={{ fontSize: '0.75rem' }}>Latest Comments</h6>
-                                        {cat.comments?.length > 0 ? (
+                            {/* Summary Table - Distinct Block */}
+                            <div className="glass-card overflow-hidden shadow-sm border border-white">
+                                <div className="p-4 border-bottom border-light bg-white bg-opacity-50">
+                                    <h5 className="fw-bold m-0 d-flex align-items-center gap-2">
+                                        <i className="bi bi-bar-chart-fill text-primary"></i> Category Performance
+                                    </h5>
+                                </div>
+                                <div className="table-responsive">
+                                    <table className="table table-hover mb-0 align-middle">
+                                        <thead className="bg-light">
+                                            <tr>
+                                                <th className="ps-4 py-4 text-secondary small fw-bold text-uppercase border-0">Category</th>
+                                                <th className="py-4 text-secondary small fw-bold text-uppercase border-0 text-center">Responses</th>
+                                                <th className="py-4 text-secondary small fw-bold text-uppercase border-0 text-center">Rating</th>
+                                                <th className="pe-4 py-4 text-secondary small fw-bold text-uppercase border-0 text-end">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {data?.category_breakdown?.map((cat, idx) => (
+                                                <tr key={idx} style={{ cursor: 'pointer' }} onClick={() => setActiveTab(cat.category)} className="group-hover-bg">
+                                                    <td className="ps-4 py-4 border-light">
+                                                        <div className="d-flex align-items-center gap-3">
+                                                            <div className="rounded-circle bg-white border shadow-sm text-primary d-flex align-items-center justify-content-center fw-bold" style={{ width: '48px', height: '48px', fontSize: '1.1rem' }}>
+                                                                {(categoryDisplayMap[cat.category] || cat.category).charAt(0)}
+                                                            </div>
+                                                            <span className="fw-bold text-dark fs-5">{categoryDisplayMap[cat.category] || cat.category}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="text-center border-light">
+                                                        <span className="badge bg-light text-dark border border-secondary border-opacity-25 fw-bold px-3 py-2 rounded-pill" style={{ minWidth: '40px' }}>
+                                                            {cat.feedback_count}
+                                                        </span>
+                                                    </td>
+                                                    <td className="text-center border-light">
+                                                        <div className="d-flex align-items-center justify-content-center gap-2">
+                                                            <span className="fw-bold fs-5">{cat.average_rating}</span>
+                                                            <span className="text-warning"><i className="bi bi-star-fill"></i></span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="pe-4 text-end border-light">
+                                                        <button className="btn btn-light rounded-pill text-primary fw-bold px-4 btn-smooth">
+                                                            View Details <i className="bi bi-chevron-right small ms-1"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </>
+                    ) : (
+                        // Detailed Category View - Distinct Block
+                        <div className="glass-card shadow-lg p-0 overflow-hidden border border-white">
+                            {/* Detailed Header */}
+                            <div className="p-5 bg-white border-bottom border-light">
+                                <div className="d-flex flex-column flex-md-row align-items-center gap-4 mb-4 text-center text-md-start">
+                                    <div className="rounded-circular bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center shadow-sm" style={{ width: '80px', height: '80px' }}>
+                                        <i className="bi bi-folder2-open fs-2"></i>
+                                    </div>
+                                    <div>
+                                        <h2 className="fw-bold text-dark mb-2">{categoryDisplayMap[activeCategoryData?.category] || activeCategoryData?.category}</h2>
+                                        <div className="d-flex align-items-center justify-content-center justify-content-md-start gap-4 text-secondary">
+                                            <span className="d-flex align-items-center gap-2 bg-light px-3 py-1 rounded-pill border">
+                                                <i className="bi bi-chat-left-text"></i> {activeCategoryData?.feedback_count} Responses
+                                            </span>
+                                            <span className="d-flex align-items-center gap-2 bg-light px-3 py-1 rounded-pill border">
+                                                <i className="bi bi-star-fill text-warning"></i> {activeCategoryData?.average_rating} Avg Rating
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="row g-0">
+                                {/* Comments Column */}
+                                <div className="col-md-7 border-end border-light">
+                                    <div className="p-5">
+                                        <h5 className="fw-bold mb-4 d-flex align-items-center gap-2 text-dark">
+                                            <i className="bi bi-chat-quote-fill text-primary"></i> User Comments
+                                        </h5>
+                                        {activeCategoryData?.comments?.length > 0 ? (
                                             <div className="d-flex flex-column gap-3">
-                                                {cat.comments.slice(0, 3).map((cmnt, i) => (
-                                                    <div key={i} className="position-relative ps-3">
-                                                        <div className="position-absolute top-0 start-0 bottom-0 bg-primary opacity-25 rounded-pill" style={{ width: '3px' }}></div>
-                                                        <p className="mb-0 text-dark bg-light bg-opacity-50 p-3 rounded-3 small lh-base" style={{ fontSize: '0.95rem' }}>
-                                                            {cmnt}
-                                                        </p>
+                                                {activeCategoryData.comments.map((comment, i) => (
+                                                    <div key={i} className="p-4 pt-5 bg-white rounded-3 border border-light shadow-sm position-relative mt-2">
+                                                        <i className="bi bi-quote position-absolute top-0 start-0 text-primary opacity-25 display-3 ms-3 mt-n1"></i>
+                                                        <p className="mb-0 text-dark lh-lg position-relative z-1 ps-2 pt-2">"{comment}"</p>
                                                     </div>
                                                 ))}
-                                                {cat.comments.length > 3 && (
-                                                    <button className="btn btn-link btn-sm text-secondary text-decoration-none p-0 text-start w-auto">
-                                                        View all {cat.comments.length} comments &rarr;
-                                                    </button>
-                                                )}
                                             </div>
                                         ) : (
-                                            <div className="text-center py-4 rounded-3 border border-dashed border-light">
-                                                <p className="text-muted small mb-0">No comments yet</p>
+                                            <div className="text-center py-5 text-muted bg-light rounded-3 border border-dashed">
+                                                <i className="bi bi-chat-square opacity-25 fs-1 mb-2 d-block"></i>
+                                                No comments available for this category.
                                             </div>
                                         )}
                                     </div>
+                                </div>
 
-                                    {/* Suggestions */}
-                                    <div className="mt-auto pt-3 border-top border-light">
-                                        <h6 className="text-uppercase text-secondary fw-bold small mb-3 ls-1" style={{ fontSize: '0.75rem' }}>Improvements</h6>
-                                        {cat.suggestions?.length > 0 ? (
-                                            <div className="d-flex flex-wrap gap-2">
-                                                {cat.suggestions.slice(0, 5).map((sugg, i) => (
-                                                    <span key={i} className="badge bg-white text-secondary border shadow-sm px-3 py-2 fw-normal rounded-2 d-flex align-items-center gap-2">
-                                                         <span className="text-primary">•</span> {sugg}
-                                                    </span>
+                                {/* Suggestions Column */}
+                                <div className="col-md-5 bg-light bg-opacity-25">
+                                    <div className="p-5">
+                                        <h5 className="fw-bold mb-4 d-flex align-items-center gap-2 text-dark">
+                                            <i className="bi bi-lightbulb-fill text-warning"></i> Suggestions
+                                        </h5>
+                                        {activeCategoryData?.suggestions?.length > 0 ? (
+                                            <ul className="list-group list-group-flush bg-transparent gap-3">
+                                                {activeCategoryData.suggestions.map((suggestion, i) => (
+                                                    <li key={i} className="list-group-item bg-white border-0 rounded-3 shadow-sm py-3 px-4 d-flex align-items-start gap-3">
+                                                        <i className="bi bi-check-circle-fill text-success mt-1 fs-5"></i>
+                                                        <span className="text-dark">{suggestion}</span>
+                                                    </li>
                                                 ))}
-                                            </div>
+                                            </ul>
                                         ) : (
-                                            <p className="text-muted small fst-italic mb-0">No suggestions recorded</p>
+                                            <div className="text-center py-5 text-muted bg-white rounded-3 border border-dashed">
+                                                <i className="bi bi-inbox opacity-25 fs-1 mb-2 d-block"></i>
+                                                No suggestions recorded.
+                                            </div>
                                         )}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    ))}
+                    )}
                 </div>
             </div>
+            <style>
+                {`
+                .no-scrollbar::-webkit-scrollbar {
+                    display: none;
+                }
+                .no-scrollbar {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+                `}
+            </style>
         </div>
     );
 };

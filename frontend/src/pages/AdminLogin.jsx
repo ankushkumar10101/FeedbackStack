@@ -57,7 +57,7 @@ const AdminLogin = () => {
                     </div>
                     <button 
                         type="submit" 
-                        className="btn btn-primary w-100 rounded-pill py-2 fw-bold shadow-sm hover-lift"
+                        className="btn btn-primary w-100 rounded-pill py-2 fw-bold shadow-sm hover-lift btn-smooth"
                         style={{ background: 'linear-gradient(135deg, #6366f1, #a855f7)', border: 'none' }}
                     >
                         Login
@@ -65,7 +65,7 @@ const AdminLogin = () => {
                     <div className="text-center mt-3">
                         <button 
                              type="button" 
-                             className="btn btn-link text-secondary text-decoration-none small"
+                             className="btn btn-link text-secondary text-decoration-none small btn-smooth"
                              onClick={() => navigate('/')}
                         >
                             &larr; Back to Feedback
