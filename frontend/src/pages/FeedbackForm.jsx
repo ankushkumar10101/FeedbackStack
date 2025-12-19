@@ -94,8 +94,8 @@ const FeedbackForm = () => {
                             >
                                 View Feedbacks &rarr;
                             </button>
-                            <h2 className="fw-bold display-6 mb-1">We Value Your <span className="gradient-text">Feedback</span></h2>
-                            <p className="text-secondary small">Help us create the best experience for you.</p>
+                            <h2 className="fw-bold display-6 mb-1"><span className="gradient-text">Feedback</span>Stack</h2>
+                            <p className="text-secondary ">Anonymous Feedback Collection Platform</p>
                         </div>
                     </div>
 
