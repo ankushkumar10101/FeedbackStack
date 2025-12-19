@@ -1,4 +1,4 @@
-# Feedback Collection System (Django + MongoDB + React)
+# FeedbackStack: Anonymous Feedback Collection Platform
 
 A full-stack anonymous feedback collection system built with **Django 5**, **MongoDB**, and **React**.
 
@@ -8,7 +8,7 @@ A full-stack anonymous feedback collection system built with **Django 5**, **Mon
 - **Rating System**: Interactive 5-star rating component.
 - **MongoDB Storage**: All feedback data is stored in a MongoDB database (`feedback_db`).
 - **Admin Analytics**: APIs to retrieve total feedback, average ratings, and distribution.
-- **CSV Export**: Admin-only endpoint to download feedback data as CSV.
+
 - **Responsive UI**: Built with React and Bootstrap.
 
 ## Tech Stack
@@ -68,7 +68,7 @@ A full-stack anonymous feedback collection system built with **Django 5**, **Mon
 |--------|----------|-------------|---------------|
 | POST | `/api/feedback/` | Submit feedback | No |
 | GET | `/api/analytics/` | Get feedback statistics | Yes (Admin) |
-| GET | `/api/export/csv/` | Download CSV export | Yes (Admin) |
+
 
 ## Notes
 - **Database Hybrid**: This project uses a hybrid database approach to maximize compatibility with the latest Django version while fulfilling the MongoDB requirement. 
