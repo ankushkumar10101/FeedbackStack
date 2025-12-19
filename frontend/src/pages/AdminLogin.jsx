@@ -25,6 +25,11 @@ const AdminLogin = () => {
                     <p className="text-secondary small">Access Feedback Dashboard</p>
                 </div>
 
+                <div className="alert alert-info border-0 rounded-3 small py-2 text-center mb-3">
+                    <i className="bi bi-info-circle me-2"></i>
+                    Username: <strong>admin</strong>, Password: <strong>admin</strong>
+                </div>
+
                 {error && (
                     <div className="alert alert-danger border-0 rounded-3 small py-2 text-center mb-3">
                         {error}
